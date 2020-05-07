@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  Browser based integration with quark webapp.
 // @author       Quark.ai
-// @match       *//uat-compass.xilinx.com/htim_uat*
+// @match       *uat-compass.xilinx.com*
 // @require     http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
 // @require     https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @grant        GM_addStyle
