@@ -15,21 +15,38 @@
         let button = $('<button class="button">ASK Quark</button>');
 
         button.click(function () {
+            let urlForumString = window.location.href;
+            let positionLastSlash = urlForumString.lastIndexOf("/");
+            let caseID = urlForumString.substr(positionLastSlash + 1, 40).trim();
             let subject = $('.lia-message-subject').first().text().trim();
             let desc = $('#bodyDisplay .lia-message-body-content').html().replace(/&nbsp;/g,'\n').replace(/<\s*br[^>]?>/g,'\n').replace(/<\s*\/p[^>]?>/g,'\n').replace(/(<([^>]+)>)/g, "").trim()
             let maxLength = 2048;
+            let categories = '';
+            let categoriesWithLink = document.getElementById('list').querySelectorAll('ul li a');
+            for (var i=0; i<categoriesWithLink.length; i++) {
+                categories += categoriesWithLink[i].innerText + ',';
+            };
+            let categoriesWithSpan = document.getElementById('list').querySelectorAll('ul li span');
+            categories += categoriesWithSpan[categoriesWithSpan.length - 1].innerText;
 
             if(desc.length > maxLength)
                 desc = desc.substring(0, maxLength)
 
             var urlString = "https://xilinx.quark.ai/support";
+            //var urlString = "http://localhost:9001/support";
             var parameters =
                 "?subject=" + encodeURIComponent(subject) +
                 "&ds=xilinx" +
                 "&desc=" + encodeURIComponent(desc) +
-                "&qMode=Ticket";
+                "&qMode=Ticket" +
+                "&url=" + encodeURIComponent(window.location.href) +
+                "&categories=" + encodeURIComponent(categories) +
+                "?caseid=" + encodeURIComponent(caseID);
+
+
 
             var encodedURL = urlString + parameters;
+            console.log('this is the url', encodedURL);
             window.open(encodedURL, "_ask");
         });
 
