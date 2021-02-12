@@ -46,7 +46,7 @@
 
 
             var encodedURL = urlString + parameters;
-            console.log('this is the url', encodedURL);
+            //console.log('this is the url', encodedURL);
             window.open(encodedURL, "_ask");
         });
 
