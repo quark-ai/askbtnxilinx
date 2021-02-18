@@ -41,7 +41,7 @@
                 "&qMode=Ticket" +
                 "&url=" + encodeURIComponent(window.location.href) +
                 "&categories=" + encodeURIComponent(categories) +
-                "?caseid=" + encodeURIComponent(caseID);
+                "&caseid=" + encodeURIComponent(caseID);
 
 
 
