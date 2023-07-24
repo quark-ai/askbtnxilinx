@@ -1,62 +1,45 @@
 // ==UserScript==
-// @name         xilinxAskQuarkForums
+// @name         xilinxAskQuarkSupportForums
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  try to take over the world!
 // @author       Lucas Bonaudi
-// @match        *://forums.xilinx.com/*
+// @match        *://support.xilinx.com/*
+// @require http://code.jquery.com/jquery-3.4.1.min.js
+// @require     https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @grant        GM_addStyle
 // ==/UserScript==
-(function() {
-    'use strict';
+waitForKeyElements('.cuf-feedItemHeader.cuf-media.l-first', function () {
+    let btnContainer = $('.cuf-feedItemHeader.cuf-media.l-first');
+    let button = $('<button id="askQuarkButton" class="button" role="button">ASK Quark</button>');
 
-    $(document).ready(function() {
-        let btnContainer = $('.lia-quilt-layout-forum-topic-message-support').first().find('.lia-quilt-column-message-header-right').find('.lia-quilt-column-alley-right')
-        let button = $('<button class="button">ASK Quark</button>');
+    btnContainer.append(button);
+    document.getElementById("askQuarkButton").addEventListener(
+        "click", ButtonClickAction, false
+    );
+});
 
-        button.click(function () {
-            let urlForumString = window.location.href;
-            let positionLastSlash = urlForumString.lastIndexOf("/");
-            let caseID = urlForumString.substr(positionLastSlash + 1, 40).trim();
-            let subject = $('.lia-message-subject').first().text().trim();
-            let desc = $('#bodyDisplay .lia-message-body-content').html().replace(/&nbsp;/g,'\n').replace(/<\s*br[^>]?>/g,'\n').replace(/<\s*\/p[^>]?>/g,'\n').replace(/(<([^>]+)>)/g, "").trim()
-            let maxLength = 2048;
-            let categories = '';
-            let categoriesWithLink = document.getElementById('list').querySelectorAll('ul li a');
-            for (var i=0; i<categoriesWithLink.length; i++) {
-                categories += categoriesWithLink[i].innerText + ',';
-            };
-            let categoriesWithSpan = document.getElementById('list').querySelectorAll('ul li span');
-            categories += categoriesWithSpan[categoriesWithSpan.length - 1].innerText;
+function ButtonClickAction(zEvent) {
+    let urlForumString = window.location.href;
+    let positionLastSlash = urlForumString.lastIndexOf("/");
+    let caseID = urlForumString.substring(positionLastSlash - 18, positionLastSlash).trim();
+    let subject = $('.cuf-body.cuf-questionTitle.forceChatterFeedBodyQuestionWithoutAnswer').first().text().trim();
+    let desc = $('.cuf-feedBodyText.forceChatterMessageSegments.forceChatterFeedBodyText .feedBodyInner').html().replace(/&nbsp;/g, '\n').replace(/<\s*br[^>]?>/g, '\n').replace(/<\s*\/p[^>]?>/g, '\n').replace(/(<([^>]+)>)/g, "").trim()
+    let maxLength = 2048;
 
-            if(desc.length > maxLength)
-                desc = desc.substring(0, maxLength)
+    if (desc.length > maxLength)
+        desc = desc.substring(0, maxLength)
 
-            var urlString = "https://xilinx.quark.ai/support";
-            //var urlString = "http://localhost:9001/support";
-            var parameters =
-                "?subject=" + encodeURIComponent(subject) +
-                "&ds=xilinx" +
-                "&desc=" + encodeURIComponent(desc) +
-                "&qMode=Ticket" +
-                "&url=" + encodeURIComponent(window.location.href) +
-                "&categories=" + encodeURIComponent(categories) +
-                "&caseid=" + encodeURIComponent(caseID);
+    var urlString = "https://xilinx-v2.quarkai.dev";
+    var parameters = "?subject=" + subject + "&desc=" + desc + "&caseid=" + caseID;
 
+    var encodedURL = urlString + parameters;
+    window.open(encodedURL, "_ask");
+}
 
-
-            var encodedURL = urlString + parameters;
-            //console.log('this is the url', encodedURL);
-            window.open(encodedURL, "_ask");
-        });
-
-        btnContainer.append(button);
-    })
-})();
-
-GM_addStyle ( `
+GM_addStyle(`
     .button {
-        background-color: orange;
+        background-color: #f26202;
         border: none;
         color: white;
         padding: 8px 32px;
@@ -67,5 +50,8 @@ GM_addStyle ( `
         border-radius: 10px;
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
         font-weight: bold;
+        top: 10px;
+        left: 900px;
+        position: absolute;
     }
 ` );
