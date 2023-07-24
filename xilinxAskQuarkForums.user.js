@@ -51,7 +51,7 @@ GM_addStyle(`
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
         font-weight: bold;
         top: 10px;
-        left: 900px;
+        left: 85%;
         position: absolute;
     }
 ` );
