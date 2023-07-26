@@ -30,7 +30,7 @@ function ButtonClickAction(zEvent) {
     if (desc.length > maxLength)
         desc = desc.substring(0, maxLength)
 
-    var urlString = "https://xilinx-v2.quarkai.dev";
+    var urlString = "https://xilinx.quarkai.app";
     var parameters = "?subject=" + subject + "&desc=" + desc + "&caseid=" + caseID;
 
     var encodedURL = urlString + parameters;
